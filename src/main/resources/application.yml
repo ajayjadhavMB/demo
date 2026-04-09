@@ -1,0 +1,33 @@
+spring:
+  config:
+    name: demo
+  datasource:
+    url: jdbc:postgresql://localhost:5432/demo
+    driver-class-name: org.postgresql.Driver
+    username: ajay
+    password: Ajay@123
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+
+  data:
+    rest:
+      base-path: /api
+
+
+server:
+    port: 8010
+
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  endpoint:
+    health:
+      show-details: always
+
+
