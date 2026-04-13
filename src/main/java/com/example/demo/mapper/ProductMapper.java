@@ -4,6 +4,10 @@ import com.example.demo.dto.request.CreateProductRequest;
 import com.example.demo.dto.request.UpdateProductRequest;
 import com.example.demo.dto.response.ProductResponse;
 import com.example.demo.entity.Product;
+
+import java.util.List;
+import java.util.stream.Collectors;
+
 import org.springframework.stereotype.Component;
 
 @Component
@@ -17,6 +21,18 @@ public class ProductMapper {
                 .price(request.getPrice())
                 .status(request.getStatus())
                 .build();
+    }
+
+    public List<Product> toEntityList(List<CreateProductRequest> requestList) {
+        return requestList.stream()
+                .map(this::toEntity)
+                .collect(Collectors.toList());
+    }
+
+    public List<ProductResponse> toResponseList(List<Product> products) {
+        return products.stream()
+                .map(this::toResponse)
+                .collect(Collectors.toList());
     }
 
     public void updateEntity(UpdateProductRequest request, Product product) {

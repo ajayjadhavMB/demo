@@ -12,6 +12,9 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+
+import java.util.List;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -45,6 +48,21 @@ public class ProductController {
                         .data(data)
                         .build());
     }
+
+    
+
+    @PostMapping("createMultiple")
+    @Operation(summary = "add multiple products")
+    public ResponseEntity<ApiResponse<List<ProductResponse>>> createMultiple (@RequestBody  List<CreateProductRequest> request) {
+
+        List<ProductResponse> dataList = productService.createMultiple(request);
+
+        ResponseEntity<ApiResponse<List<ProductResponse>>> entity = ResponseEntity.status(HttpStatus.CREATED).body(ApiResponse.<List<ProductResponse>> builder().success(true).message("products created succesfully").data(dataList).build());
+     
+        
+        return entity;
+    }
+    
 
     @GetMapping("/{id}")
     @Operation(summary = "Get product by id")

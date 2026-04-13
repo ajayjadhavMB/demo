@@ -14,6 +14,9 @@ import com.example.demo.service.ProductService;
 import com.example.demo.specification.ProductSpecification;
 import com.example.demo.util.PageUtil;
 import lombok.RequiredArgsConstructor;
+
+import java.util.List;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -74,5 +77,19 @@ public class ProductServiceImpl implements ProductService {
     private Product findProduct(Long id) {
         return productRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Product not found with id: " + id));
+    }
+
+    @Override
+    public List<ProductResponse> createMultiple(List<CreateProductRequest> request) {
+        // Check for duplicate SKUs in the request
+        for (CreateProductRequest req : request) {
+            if (productRepository.existsBySku(req.getSku())) {
+                throw new DuplicateResourceException("Product with SKU already exists: " + req.getSku());
+            }
+        }
+
+        List<Product> products = productMapper.toEntityList(request);
+        List<Product> savedProducts = productRepository.saveAll(products);
+        return productMapper.toResponseList(savedProducts);
     }
 }
