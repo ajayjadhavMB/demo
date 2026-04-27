@@ -5,11 +5,10 @@ import com.example.demo.exception.DuplicateResourceException;
 import com.example.demo.repository.UserRepository;
 import com.example.demo.service.CustomUserDetailsService;
 
-import java.util.Optional;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -23,12 +22,13 @@ public class CustomUserDetailsServiceImpl implements CustomUserDetailsService, U
 
     @Override
     public UserDetails loadUserByUsername(String username) {
-        Optional<User> user = repo.findByUsername(username);
+        User user = repo.findByUsername(username)
+            .orElseThrow(() -> new UsernameNotFoundException("User not found: " + username));
 
         return org.springframework.security.core.userdetails.User
-            .withUsername(user.orElseThrow().getUsername())
-            .password(user.orElseThrow().getPassword())
-            .roles(user.orElseThrow().getRole())
+            .withUsername(user.getUsername())
+            .password(user.getPassword())
+            .roles(normalizeRole(user.getRole()))
             .build();
     }
 
@@ -44,9 +44,16 @@ public class CustomUserDetailsServiceImpl implements CustomUserDetailsService, U
         User newUser = new User();
         newUser.setUsername(user.getUsername());
         newUser.setPassword(passwordEncoder.encode(user.getPassword()));
-        newUser.setRole(user.getRole());
+        newUser.setRole(normalizeRole(user.getRole()));
 
         return repo.save(newUser);
       
+    }
+
+    private String normalizeRole(String role) {
+        if (role == null || role.isBlank()) {
+            return "USER";
+        }
+        return role.startsWith("ROLE_") ? role.substring("ROLE_".length()) : role;
     }
 }
