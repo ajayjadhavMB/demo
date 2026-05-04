@@ -1,5 +1,22 @@
-{"properties": [{
-  "name": "spring.data.rest.base-path",
-  "type": "java.lang.String",
-  "description": "A description for 'spring.data.rest.base-path'"
-}]}
+{"properties": [
+  {
+    "name": "spring.data.rest.base-path",
+    "type": "java.lang.String",
+    "description": "A description for 'spring.data.rest.base-path'"
+  },
+  {
+    "name": "aws.region",
+    "type": "java.lang.String",
+    "description": "A description for 'aws.region'"
+  },
+  {
+    "name": "aws.secret.name",
+    "type": "java.lang.String",
+    "description": "A description for 'aws.secret.name'"
+  },
+  {
+    "name": "aws.s3.bucket",
+    "type": "java.lang.String",
+    "description": "A description for 'aws.s3.bucket'"
+  }
+]}

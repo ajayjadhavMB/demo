@@ -38,3 +38,12 @@ springdoc:
     operations-sorter: method
     tags-sorter: alpha
 
+aws:
+  region: ap-south-1
+
+  secret:
+    name: springboot/s3/credentials
+
+  s3:
+    enabled: true
+    bucket: my-springboot-bucket-aj-123
