@@ -10,33 +10,33 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
 @Configuration
-@EnableWebSecurity
+// @EnableWebSecurity
 public class SecurityConfig {
 
-    @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        http
-            .csrf(csrf -> csrf.disable())
-            .authorizeHttpRequests(auth -> auth
-                .requestMatchers(
-                    "/public/**",
-                    "/files/**",
-                    "/swagger-ui/**",
-                    "/swagger-ui.html",
-                    "/v3/api-docs/**",
-                    "/createUser"
-                ).permitAll()
-                .anyRequest().authenticated()
-            )
-            // Use Spring Security's generated login page (no custom /login template required)
-            .formLogin(Customizer.withDefaults())
-            .httpBasic(Customizer.withDefaults())
-            ;
+    // @Bean
+    // public SecurityFilterChain securityFilterChain(HttpSecurity http) throws
+    // Exception {
+    // http
+    // .csrf(csrf -> csrf.disable())
+    // .authorizeHttpRequests(auth -> auth
+    // .requestMatchers(
+    // "/public/**",
+    // "/files/**",
+    // "/swagger-ui/**",
+    // "/swagger-ui.html",
+    // "/v3/api-docs/**",
+    // "/createUser"
+    // ).permitAll()
+    // .anyRequest().authenticated()
+    // )
+    // // Use Spring Security's generated login page (no custom /login template
+    // required)
+    // .formLogin(Customizer.withDefaults())
+    // .httpBasic(Customizer.withDefaults())
+    // ;
 
-        return http.build();
-    }
-
- 
+    // return http.build();
+    // }
 
     @Bean
     public PasswordEncoder passwordEncoder() {
