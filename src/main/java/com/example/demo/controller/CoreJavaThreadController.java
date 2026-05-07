@@ -10,7 +10,7 @@ import com.example.demo.javaprep.thread.MusicTask;
 import com.example.demo.javaprep.thread.MyTask;
 // import com.example.demo.javaprep.thread.MyThread;
 import com.example.demo.javaprep.thread.MyThread;
-
+import com.example.demo.javaprep.thread.NumberPrinter;
 
 @RestController
 @RequestMapping("/core-java-thread")
@@ -61,7 +61,8 @@ public class CoreJavaThreadController {
     public String getStartVsRun() {
 
         MyThread myThread = new MyThread();
-        myThread.run();// wrong way to start a thread, it will execute in the main thread, not in a new thread
+        myThread.run();// wrong way to start a thread, it will execute in the main thread, not in a new
+                       // thread
         System.out.println("Called run() method directly, so it's executed in the main thread.");
 
         myThread.start();
@@ -69,7 +70,7 @@ public class CoreJavaThreadController {
     }
 
     @GetMapping("/race-condition-problem")
-    public  String getRaceConditionProblem(){
+    public String getRaceConditionProblem() {
         Counter counter = new Counter();
 
         Thread t1 = new Thread(() -> {
@@ -96,6 +97,17 @@ public class CoreJavaThreadController {
 
         System.out.println("Final count value: " + counter.getCount());
         return "Race condition problem demonstration completed.";
+    }
+
+    @GetMapping("/print-odd-even")
+    public String printOddEven() {
+        NumberPrinter numberPrinter = new NumberPrinter();
+        Thread odd = new Thread(() -> numberPrinter.printOdd());
+        Thread even = new Thread(() -> numberPrinter.printEven());
+
+        odd.start();
+        even.start();
+        return "This endpoint demonstrates how to print odd and even numbers using two threads. Check the console for output.";
     }
 
 }
